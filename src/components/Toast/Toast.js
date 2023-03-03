@@ -24,9 +24,9 @@ const TEXTS_BY_VARIANT = {
   error: "text-error",
 };
 
-function Toast({ message, variant, dismissToast }) {
+function Toast({ message, variant, destroy }) {
   const Variant = ICONS_BY_VARIANT[variant];
-  if (message === "") return <></>;
+  if (message === "" || message === undefined) return <></>;
   return (
     <div
       className={clsx(
@@ -40,7 +40,7 @@ function Toast({ message, variant, dismissToast }) {
         <Variant size={24} className="block" />
       </div>
       <p className="flex flex-1 py-3 font-semibold">{message}</p>
-      <button className="flex shrink-0 border-none bg-transparent p-4 cursor-pointer" onClick={dismissToast}>
+      <button className="flex shrink-0 border-none bg-transparent p-4 cursor-pointer" onClick={destroy}>
         <X size={24} className="block" />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
