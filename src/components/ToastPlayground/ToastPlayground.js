@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import Button from "../Button";
+import Toast from "../Toast/Toast";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
@@ -10,7 +11,9 @@ const styles = {
 };
 
 function ToastPlayground() {
-  const [toastType, setToastType] = useState(VARIANT_OPTIONS[0]);
+  const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
+  const [message, setMessage] = useState("");
+  // const [toasts, setToasts] = useState([]);
   return (
     <div className="py-16 px-8 max-w-[50rem] my-0 mx-auto">
       <header className="flex items-end relative mb-16 min-h-[300px]">
@@ -21,7 +24,7 @@ function ToastPlayground() {
         />
         <h1 className="relative text-6xl pb-8 text-white drop-shadow-md">Toast Playground</h1>
       </header>
-
+      <Toast message={message} variant={variant} />
       <div
         className={clsx(
           "[color-scheme:light] rounded p-4 mt-8",
@@ -35,23 +38,29 @@ function ToastPlayground() {
             Message
           </label>
           <div className="flex flex-1">
-            <textarea id="message" className="h-16 w-full border-slate-600 border" />
+            <textarea
+              id="message"
+              className="h-16 w-full border-slate-600 border"
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+              }}
+            />
           </div>
         </div>
         <div className={styles.row}>
           <div className={styles.label}>Variant</div>
           {VARIANT_OPTIONS.map((option) => (
-            <div className="flex flex-1 flex-wrap gap-[0.25rem_1rem]">
-              <label className="flex items-center gap-2 w-full" htmlFor="variant-notice">
+            <div key={option} className="flex flex-1 flex-wrap gap-[0.25rem_1rem]">
+              <label className="flex items-center gap-2 w-full cursor-pointer" htmlFor={`variant-${option}`}>
                 <input
                   id={`variant-${option}`}
-                  key={option}
                   type="radio"
                   name="variant"
                   value={option}
-                  checked={toastType === option}
+                  checked={variant === option}
                   onChange={(e) => {
-                    setToastType(e.target.value);
+                    setVariant(e.target.value);
                   }}
                 />
                 {option}
