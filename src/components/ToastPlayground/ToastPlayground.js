@@ -1,9 +1,8 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useContext } from "react";
 import Button from "../Button";
+import { ToastContext, VARIANT_OPTIONS } from "../ToastProvider/ToastProvider";
 import ToastShelf from "../ToastShelf/ToastShelf";
-
-const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 const styles = {
   label: "basis-40 text-right font-bold",
@@ -11,29 +10,7 @@ const styles = {
 };
 
 function ToastPlayground() {
-  const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
-  const [message, setMessage] = useState("");
-  const [toasts, setToasts] = useState([]);
-
-  function addToast(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    let newToasts = [...toasts];
-    let newId = crypto.randomUUID();
-    newToasts.push({
-      id: newId,
-      message: message === "" ? "message" : message,
-      variant: variant,
-      destroy: () => {
-        setToasts((prev) =>
-          prev.filter((toast) => {
-            return toast.id !== newId;
-          })
-        );
-      },
-    });
-    setToasts(newToasts);
-  }
+  const { addToast, toasts, variant, setVariant, message, setMessage } = useContext(ToastContext);
 
   return (
     <div className="py-16 px-8 max-w-[50rem] my-0 mx-auto">
