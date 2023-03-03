@@ -51,15 +51,6 @@ h6 {
 html {
   color-scheme: dark;
 
-  --color-notice: hsl(235deg 100% 50%);
-  --color-notice-bg: hsl(235deg 0% 100%);
-  --color-warning: hsl(35deg 100% 46%);
-  --color-warning-bg: hsl(40deg 100% 94%);
-  --color-success: hsl(120deg 80% 35%);
-  --color-success-bg: hsl(120deg 90% 96%);
-  --color-error: hsl(345deg 100% 50%);
-  --color-error-bg: hsl(350deg 90% 96%);
-
   --shadow-color: 250deg 35% 11%;
   /* prettier-ignore */
   --shadow-elevation-low:

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import Button from "../Button";
-import Toast from "../Toast/Toast";
+import ToastShelf from "../ToastShelf/ToastShelf";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
@@ -15,30 +15,22 @@ function ToastPlayground() {
   const [message, setMessage] = useState("");
   const [toasts, setToasts] = useState([]);
 
-  function destroyToast(id) {
-    return () => {
-      console.log("dismissing toast");
-      let newToasts = [...toasts];
-      console.log(id);
-      for (let i in newToasts) {
-        if (newToasts[i].id === id) {
-          newToasts.splice(i, i);
-        }
-      }
-      setToasts(newToasts);
-    };
-  }
-
   function addToast(e) {
     e.preventDefault();
     e.stopPropagation();
     let newToasts = [...toasts];
-    const newId = crypto.randomUUID();
+    let newId = crypto.randomUUID();
     newToasts.push({
       id: newId,
-      message: "message",
+      message: message === "" ? "message" : message,
       variant: variant,
-      destroy: destroyToast(newId),
+      destroy: () => {
+        setToasts((prev) =>
+          prev.filter((toast) => {
+            return toast.id !== newId;
+          })
+        );
+      },
     });
     setToasts(newToasts);
   }
@@ -53,7 +45,6 @@ function ToastPlayground() {
         />
         <h1 className="relative text-6xl pb-8 text-white drop-shadow-md">Toast Playground</h1>
       </header>
-      <Toast message={toasts.at(-1)?.message} variant={toasts.at(-1)?.variant} destroy={toasts.at(-1)?.destroy} />
       <div
         className={clsx(
           "[color-scheme:light] rounded p-4 mt-8",
@@ -105,6 +96,7 @@ function ToastPlayground() {
             </div>
           </div>
         </form>
+        <ToastShelf toasts={toasts} />
       </div>
     </div>
   );
