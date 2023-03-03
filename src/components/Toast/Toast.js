@@ -3,8 +3,6 @@ import { AlertOctagon, AlertTriangle, CheckCircle, Info, X } from "react-feather
 
 import VisuallyHidden from "../VisuallyHidden";
 
-import styles from "./Toast.module.css";
-
 const ICONS_BY_VARIANT = {
   notice: Info,
   warning: AlertTriangle,
@@ -12,22 +10,38 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast() {
+const BGS_BY_VARIANT = {
+  notice: "bg-noticebg",
+  warning: "bg-warningbg",
+  success: "bg-successbg",
+  error: "bg-errorbg",
+};
+
+const TEXTS_BY_VARIANT = {
+  notice: "text-notice",
+  warning: "text-warning",
+  success: "text-success",
+  error: "text-error",
+};
+
+function Toast({ message, variant, destroy }) {
+  const Variant = ICONS_BY_VARIANT[variant];
+  if (message === "" || message === undefined) return <></>;
   return (
     <div
       className={clsx(
-        styles.notice,
+        BGS_BY_VARIANT[variant],
         "relative flex items-center gap-4 rounded-2xl",
-        "text-black [color-scheme:light] bg-white",
+        "text-black [color-scheme:light]",
         "max-w-full w-80 box-shadow-md"
       )}
     >
-      <div className={styles.iconContainer}>
-        <Info size={24} />
+      <div className={clsx(TEXTS_BY_VARIANT[variant], "flex flex-shrink-0 p-4 pr-0")}>
+        <Variant size={24} className="block" />
       </div>
-      <p className="flex flex-1 py-3 font-semibold">16 photos have been uploaded</p>
-      <button className="flex shrink-0 border-none bg-transparent p-4 cursor-pointer">
-        <X size={24} />
+      <p className="flex flex-1 py-3 font-semibold">{message}</p>
+      <button className="flex shrink-0 border-none bg-transparent p-4 cursor-pointer" onClick={destroy}>
+        <X size={24} className="block" />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
