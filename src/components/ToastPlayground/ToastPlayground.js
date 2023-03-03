@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../Button";
 import ToastShelf from "../ToastShelf/ToastShelf";
 
@@ -14,34 +14,23 @@ function ToastPlayground() {
   const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
   const [message, setMessage] = useState("");
   const [toasts, setToasts] = useState([]);
-  const [destroyToasts, setDestroyToasts] = useState([]);
-
-  useEffect(() => {
-    const newDeleteToasts = toasts.map((toast) => {
-      return () => {
-        let newToasts = [...toasts];
-        const targetId = toast.id;
-        let targetIndex = undefined;
-        for (let i in toasts) {
-          if (toasts[i].id === targetId) {
-            targetIndex = i;
-          }
-        }
-        newToasts.splice(targetIndex, 1);
-        setToasts(newToasts);
-      };
-    });
-    setDestroyToasts(newDeleteToasts);
-  }, [toasts]);
 
   function addToast(e) {
     e.preventDefault();
     e.stopPropagation();
     let newToasts = [...toasts];
+    let newId = crypto.randomUUID();
     newToasts.push({
-      id: crypto.randomUUID(),
-      message: "message",
+      id: newId,
+      message: message === "" ? "message" : message,
       variant: variant,
+      destroy: () => {
+        setToasts((prev) =>
+          prev.filter((toast) => {
+            return toast.id !== newId;
+          })
+        );
+      },
     });
     setToasts(newToasts);
   }
@@ -107,7 +96,7 @@ function ToastPlayground() {
             </div>
           </div>
         </form>
-        <ToastShelf toasts={toasts} destroyToasts={destroyToasts} />
+        <ToastShelf toasts={toasts} />
       </div>
     </div>
   );
