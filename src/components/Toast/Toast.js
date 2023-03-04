@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { AlertOctagon, AlertTriangle, CheckCircle, Info, X } from "react-feather";
-
-import VisuallyHidden from "../VisuallyHidden";
+import VisuallyHidden from "../VisuallyHidden/VisuallyHidden";
 
 const ICONS_BY_VARIANT = {
   notice: Info,
@@ -39,10 +38,15 @@ function Toast({ message, variant, destroy }) {
       <div className={clsx(TEXTS_BY_VARIANT[variant], "flex flex-shrink-0 p-4 pr-0")}>
         <Variant size={24} className="block" />
       </div>
+      <VisuallyHidden>{variant} - </VisuallyHidden>
       <p className="flex flex-1 py-3 font-semibold">{message}</p>
-      <button className="flex shrink-0 border-none bg-transparent p-4 cursor-pointer" onClick={destroy}>
+      <button
+        className="flex shrink-0 border-none bg-transparent p-4 cursor-pointer"
+        onClick={destroy}
+        aria-label="Dismiss message"
+        aria-live="off"
+      >
         <X size={24} className="block" />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );
