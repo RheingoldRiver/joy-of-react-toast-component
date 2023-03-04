@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import useSpecialKey from "../../hooks/use-special-key";
 
 export const ToastContext = createContext();
 
@@ -8,6 +9,10 @@ function ToastProvider({ children }) {
   const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
   const [message, setMessage] = useState("");
   const [toasts, setToasts] = useState([]);
+
+  useSpecialKey("Escape", () => {
+    setToasts([]);
+  });
 
   function addToast(e) {
     e.preventDefault();
