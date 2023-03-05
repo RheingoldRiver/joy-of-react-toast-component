@@ -1,25 +1,3 @@
-
-
-.titleMessageWrapper {
-  padding-bottom: 16px;
-  border-bottom: 1px dotted hsl(250deg 80% 80% / 0.5);
-  margin-bottom: 16px;
-}
-.titleMessageRow {
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.titleMessageRow:not(:last-of-type) {
-  margin-bottom: 16px;
-}
-
-.titleInput {
-  display: block;
-  width: 100%;
-}
-
 .secondsInput {
   width: 3rem;
   padding: 0px;
