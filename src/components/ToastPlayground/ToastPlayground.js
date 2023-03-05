@@ -14,15 +14,16 @@ function ToastPlayground() {
   const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
   const [message, setMessage] = useState("");
   const [title, setTitle] = useState("");
+  const [seconds, setSeconds] = useState(0);
   const { addToast, toasts } = useContext(ToastContext);
 
   const pushToast = useCallback(
     (e) => {
       e.preventDefault();
       e.stopPropagation();
-      addToast(variant, message, title);
+      addToast(variant, message, title, seconds);
     },
-    [variant, message, title, addToast]
+    [variant, message, title, seconds, addToast]
   );
 
   useSpecialKey("Enter", ["Control"], (e) => {
@@ -98,6 +99,27 @@ function ToastPlayground() {
                 </label>
               </div>
             ))}
+          </div>
+          <div className={styles.row}>
+            <label htmlFor="seconds" className={clsx(styles.label, "self-start")}>
+              Timeout (seconds)
+            </label>
+            <div className="flex flex-1">
+              <div className="flex flex-col">
+                <input
+                  id="seconds"
+                  className="w-12 p-0 m-0 bg-transparent border-b-purple-900 border-b-2 border-b-solid text-center"
+                  value={seconds}
+                  onChange={(e) => {
+                    setSeconds(e.target.value);
+                  }}
+                ></input>
+                <p>
+                  It is inadvisable, from an accessibility standpoint, to specify a timeout; however, you may want to if
+                  the intended audience is yourself. Set to 0 to disable.
+                </p>
+              </div>
+            </div>
           </div>
           <div className={styles.row} data-label="submit-button-container">
             <div className={styles.label} />

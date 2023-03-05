@@ -18,20 +18,26 @@ function ToastProvider({ children }) {
     clearToasts();
   });
 
-  function addToast(variant, message, title) {
+  function addToast(variant, message, title, seconds) {
     let newId = crypto.randomUUID();
     let newToasts = [...toasts];
+    let destroy = () => {
+      setToasts((prev) =>
+        prev.filter((toast) => {
+          return toast.id !== newId;
+        })
+      );
+    };
     newToasts.push({
       id: newId,
       message: message === "" ? "message" : message,
       title: title === "" ? variant + "!" : title,
       variant: variant,
-      destroy: () => {
-        setToasts((prev) =>
-          prev.filter((toast) => {
-            return toast.id !== newId;
-          })
-        );
+      seconds: seconds,
+      destroy: destroy,
+      autoDestroy: () => {
+        if (seconds === 0) return;
+        setTimeout(destroy, seconds * 1000);
       },
     });
     setToasts(newToasts);
