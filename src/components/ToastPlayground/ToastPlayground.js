@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Button from "../Button";
 import { ToastContext, VARIANT_OPTIONS } from "../ToastProvider/ToastProvider";
 import ToastShelf from "../ToastShelf/ToastShelf";
@@ -10,7 +10,15 @@ const styles = {
 };
 
 function ToastPlayground() {
-  const { addToast, toasts, variant, setVariant, message, setMessage } = useContext(ToastContext);
+  const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
+  const [message, setMessage] = useState("");
+  const { addToast, toasts } = useContext(ToastContext);
+
+  function pushToast(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    addToast(variant, message);
+  }
 
   return (
     <div className="py-16 px-8 max-w-[50rem] my-0 mx-auto">
@@ -30,7 +38,7 @@ function ToastPlayground() {
           "divide-y-2 divide-slate-700/60 divide-dotted space-y-4"
         )}
       >
-        <form onSubmit={addToast}>
+        <form onSubmit={pushToast}>
           <div className={styles.row}>
             <label htmlFor="message" className={styles.label} style={{ alignSelf: "baseline" }}>
               Message
