@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import useSpecialKey from "../../hooks/use-special-key";
 
 export const ToastContext = createContext();
@@ -6,19 +6,21 @@ export const ToastContext = createContext();
 export const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastProvider({ children }) {
-  const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
-  const [message, setMessage] = useState("");
   const [toasts, setToasts] = useState([]);
 
-  useSpecialKey("Escape", () => {
+  const clearToasts = useCallback(() => {
+    // Use a useCallback hook when we're invoking a custom hook because that hook will be
+    // updating any time the piece of state it depends on changes otherwise
     setToasts([]);
+  }, []);
+
+  useSpecialKey("Escape", () => {
+    clearToasts();
   });
 
-  function addToast(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    let newToasts = [...toasts];
+  function addToast(variant, message) {
     let newId = crypto.randomUUID();
+    let newToasts = [...toasts];
     newToasts.push({
       id: newId,
       message: message === "" ? "message" : message,
@@ -37,10 +39,6 @@ function ToastProvider({ children }) {
   return (
     <ToastContext.Provider
       value={{
-        variant,
-        setVariant,
-        message,
-        setMessage,
         toasts,
         setToasts,
         addToast,
