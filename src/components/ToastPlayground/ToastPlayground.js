@@ -1,5 +1,6 @@
 import clsx from "clsx";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
+import useSpecialKey from "../../hooks/use-special-key";
 import Button from "../Button";
 import { ToastContext, VARIANT_OPTIONS } from "../ToastProvider/ToastProvider";
 import ToastShelf from "../ToastShelf/ToastShelf";
@@ -15,14 +16,21 @@ function ToastPlayground() {
   const [title, setTitle] = useState("");
   const { addToast, toasts } = useContext(ToastContext);
 
-  function pushToast(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    addToast(variant, message, title);
-  }
+  const pushToast = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      addToast(variant, message, title);
+    },
+    [variant, message, title, addToast]
+  );
+
+  useSpecialKey("Enter", ["Control"], (e) => {
+    pushToast(e);
+  });
 
   return (
-    <div className="py-16 px-8 max-w-[50rem] my-0 mx-auto">
+    <div className="py-16 px-8 max-w-[50rem] my-0 mx-auto" data-label="container">
       <header className="flex items-end relative mb-16 min-h-[300px]">
         <img
           className="absolute right-0 bottom-0 block w-[200px] rounded-lg shadow-xxlg"
@@ -38,13 +46,14 @@ function ToastPlayground() {
           "bg-white text-black text-base",
           "divide-y-2 divide-slate-700/60 divide-dotted space-y-4"
         )}
+        data-label="form-container"
       >
         <form onSubmit={pushToast}>
-          <div className={clsx(styles.row)}>
+          <div className={clsx(styles.row)} data-label="form-container">
             <label htmlFor="title" className={styles.label}>
               Title
             </label>
-            <div className="flex flex-1">
+            <div className="flex flex-1" data-label="title-input">
               <input
                 id="title"
                 className="w-full block border-slate-600 border-solid border"
@@ -55,7 +64,7 @@ function ToastPlayground() {
               ></input>
             </div>
           </div>
-          <div className={styles.row}>
+          <div className={styles.row} data-label="message-container">
             <label htmlFor="message" className={clsx(styles.label, "self-baseline")}>
               Message
             </label>
@@ -90,7 +99,7 @@ function ToastPlayground() {
               </div>
             ))}
           </div>
-          <div className={styles.row}>
+          <div className={styles.row} data-label="submit-button-container">
             <div className={styles.label} />
             <div className="flex flex-1 pt-4">
               <Button>Pop Toast!</Button>

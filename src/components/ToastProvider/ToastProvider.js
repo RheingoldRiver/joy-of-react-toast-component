@@ -14,7 +14,7 @@ function ToastProvider({ children }) {
     setToasts([]);
   }, []);
 
-  useSpecialKey("Escape", () => {
+  useSpecialKey("Escape", [], () => {
     clearToasts();
   });
 
