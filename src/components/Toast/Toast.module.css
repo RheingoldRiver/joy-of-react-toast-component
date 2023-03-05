@@ -1,9 +1,5 @@
 .progressBar {
     animation-name: progress-bar;
-    animation-direction: normal;
-    animation-iteration-count: 1;
-    animation-timing-function: linear;
-    animation-play-state: running;
 }
 
 @keyframes progress-bar {
