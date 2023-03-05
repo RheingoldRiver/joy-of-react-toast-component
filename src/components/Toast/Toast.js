@@ -70,19 +70,21 @@ function Toast({ title, message, variant, destroy, seconds, autoDestroy }) {
           <X size={24} className="block" />
         </button>
       </div>
-      <div
-        data-label="progress-container"
-        className={clsx(
-          "mx-auto mb-2 w-11/12 h-2 block",
-          "border border-solid border-slate-400 rounded-lg text-center"
-        )}
-      >
+      {seconds > 0 && (
         <div
-          data-label="progress-bar"
-          className={clsx(styles.progressBar, "flex items-start h-full text-xxs", PROGRESS_BY_VARIANT[variant])}
-          style={{ "animation-duration": `${seconds}s` }}
-        ></div>
-      </div>
+          data-label="progress-container"
+          className={clsx(
+            "mx-auto mb-2 w-11/12 h-2 block",
+            "border border-solid border-slate-400 rounded-lg text-center"
+          )}
+        >
+          <div
+            data-label="progress-bar"
+            className={clsx(styles.progressBar, "flex items-start h-full text-xxs", PROGRESS_BY_VARIANT[variant])}
+            style={{ "animation-duration": `${seconds}s` }}
+          ></div>
+        </div>
+      )}
     </div>
   );
 }
