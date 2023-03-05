@@ -18,12 +18,13 @@ function ToastProvider({ children }) {
     clearToasts();
   });
 
-  function addToast(variant, message) {
+  function addToast(variant, message, title) {
     let newId = crypto.randomUUID();
     let newToasts = [...toasts];
     newToasts.push({
       id: newId,
       message: message === "" ? "message" : message,
+      title: title === "" ? variant + "!" : title,
       variant: variant,
       destroy: () => {
         setToasts((prev) =>

@@ -10,9 +10,9 @@ function ToastShelf({ toasts }) {
       aria-live="assertive"
       aria-label="Notification"
     >
-      {toasts.map(({ id, message, variant, destroy }) => (
+      {toasts.map(({ id, ...rest }) => (
         <li className={styles.toastWrapper} key={id}>
-          <Toast message={message} variant={variant} destroy={destroy}></Toast>
+          <Toast {...rest}></Toast>
         </li>
       ))}
     </ol>

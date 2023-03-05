@@ -12,12 +12,13 @@ const styles = {
 function ToastPlayground() {
   const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
   const [message, setMessage] = useState("");
+  const [title, setTitle] = useState("");
   const { addToast, toasts } = useContext(ToastContext);
 
   function pushToast(e) {
     e.preventDefault();
     e.stopPropagation();
-    addToast(variant, message);
+    addToast(variant, message, title);
   }
 
   return (
@@ -39,8 +40,23 @@ function ToastPlayground() {
         )}
       >
         <form onSubmit={pushToast}>
+          <div className={clsx(styles.row)}>
+            <label htmlFor="title" className={styles.label}>
+              Title
+            </label>
+            <div className="flex flex-1">
+              <input
+                id="title"
+                className="w-full block border-slate-600 border-solid border"
+                value={title}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+              ></input>
+            </div>
+          </div>
           <div className={styles.row}>
-            <label htmlFor="message" className={styles.label} style={{ alignSelf: "baseline" }}>
+            <label htmlFor="message" className={clsx(styles.label, "self-baseline")}>
               Message
             </label>
             <div className="flex flex-1">
